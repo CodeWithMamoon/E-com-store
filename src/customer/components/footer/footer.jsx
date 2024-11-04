@@ -22,7 +22,7 @@ function Footer() {
       </div>
       <div className='borer border-white'>
         <h2>Company</h2>
-        <ul>
+        <ul>    
             <li>HOme</li>
             <li>About</li>
             <li>Contact</li>
