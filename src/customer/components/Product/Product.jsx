@@ -17,6 +17,8 @@ import { XMarkIcon } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon } from '@heroicons/react/20/solid'
 import Productcard from './Productcard'
 import men_kurta from '../../../Data/Men_kurta'
+import FilterListIcon from '@mui/icons-material/FilterList';
+import { useLocation, useNavigate } from 'react-router-dom'
 
 const sortOptions = [
   { name: 'Most Popular', href: '#', current: true },
@@ -25,50 +27,58 @@ const sortOptions = [
   { name: 'Price: Low to High', href: '#', current: false },
   { name: 'Price: High to Low', href: '#', current: false },
 ]
-const subCategories = [
-  { name: 'Totes', href: '#' },
-  { name: 'Backpacks', href: '#' },
-  { name: 'Travel Bags', href: '#' },
-  { name: 'Hip Bags', href: '#' },
-  { name: 'Laptop Sleeves', href: '#' },
-]
+
 const filters = [
   {
-    id: 'color',
-    name: 'Color',
+    id: "color",
+    name: "color",
     options: [
-      { value: 'white', label: 'White', checked: false },
-      { value: 'beige', label: 'Beige', checked: false },
-      { value: 'blue', label: 'Blue', checked: true },
-      { value: 'brown', label: 'Brown', checked: false },
-      { value: 'green', label: 'Green', checked: false },
-      { value: 'purple', label: 'Purple', checked: false },
-    ],
+      { value: "white", label: "white" },
+      { value: "green", label: "green" },
+      { value: "red", label: "red" },
+      { value: "yellow", label: "yellow" },
+    ]
   },
   {
-    id: 'category',
-    name: 'Category',
+    id: "size",
+    name: "size",
     options: [
-      { value: 'new-arrivals', label: 'New Arrivals', checked: false },
-      { value: 'sale', label: 'Sale', checked: false },
-      { value: 'travel', label: 'Travel', checked: true },
-      { value: 'organization', label: 'Organization', checked: false },
-      { value: 'accessories', label: 'Accessories', checked: false },
-    ],
-  },
-  {
-    id: 'size',
-    name: 'Size',
-    options: [
-      { value: '2l', label: '2L', checked: false },
-      { value: '6l', label: '6L', checked: false },
-      { value: '12l', label: '12L', checked: false },
-      { value: '18l', label: '18L', checked: false },
-      { value: '20l', label: '20L', checked: false },
-      { value: '40l', label: '40L', checked: true },
-    ],
-  },
+      { value: "S", label: "S" },
+      { value: "M", label: "M" },
+      { value: "L", label: "L" },
+      { value: "XL", label: "XL" },
+    ]
+  }
 ]
+
+const singleFilter = [
+  {
+    id: "price",
+    name: "price",
+    options: [
+      { value: "159-399", label: "159-399" },
+      { value: "399-999", label: "399-999" },
+    ]
+  },
+  {
+    id: "discount",
+    name: "Discount Range",
+    options: [
+      { value: "10", label: "10% And Above" },
+      { value: "20", label: "20% and Above" },
+      { value: "30", label: "30% and Above" },
+      { value: "40", label: "40% and Above" },
+    ]
+  },
+  {
+    id: "stock",
+    name: "Availability",
+    options: [
+      { value: "in_stock", label: "in_stock" },
+      { value: "out_in_stock", label: "out_in_stock" },
+    ]
+  }
+];
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -76,7 +86,42 @@ function classNames(...classes) {
 
 export default function Product() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
-
+  const location = useLocation();
+  const navigate = useNavigate();
+  
+  const handlefilter = (value, sectionid) => {
+    const searchparams = new URLSearchParams(location.search);
+    let filtervalue = searchparams.getAll(sectionid);
+    
+    // Initialize filtervalue as an empty array if it's not already
+    if (filtervalue.length === 0) {
+      filtervalue = [];
+   }
+    // Check if the value exists in the filter
+    if (filtervalue.length > 0 && filtervalue[0].split(",").includes(value)) {
+      filtervalue = filtervalue[0].split(",").filter((item) => item !== value);
+  
+      if (filtervalue.length === 0) {
+        searchparams.delete(sectionid);
+      }
+    } else {
+      filtervalue.push(value);
+    }
+  
+    // Update the search params if filtervalue is not empty
+    if (filtervalue.length > 0) {
+      searchparams.set(sectionid, filtervalue.join(","));
+      const query = searchparams.toString();
+      navigate({ search: `?${query}` });
+    }
+  }
+  const handleRadioFilterchange=(e,sectionid)=>{
+    const searchparams = new URLSearchParams(location.search);
+       searchparams.set(sectionid,e.target.value)
+       const query = searchparams.toString();
+       navigate({ search: `?${query}` });
+  }
+  
   return (
     <div className="bg-white">
       <div>
@@ -106,16 +151,7 @@ export default function Product() {
 
               {/* Filters */}
               <form className="mt-4 border-t border-gray-200">
-                <h3 className="sr-only">Categories</h3>
-                <ul role="list" className="px-2 py-3 font-medium text-gray-900">
-                  {subCategories.map((category) => (
-                    <li key={category.name}>
-                      <a href={category.href} className="block px-2 py-3">
-                        {category.name}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
+
 
                 {filters.map((section) => (
                   <Disclosure key={section.id} as="div" className="border-t border-gray-200 px-4 py-6">
@@ -133,6 +169,7 @@ export default function Product() {
                         {section.options.map((option, optionIdx) => (
                           <div key={option.value} className="flex items-center">
                             <input
+                            onChange={() => handlefilter(option.value, section.id)}
                               defaultValue={option.value}
                               defaultChecked={option.checked}
                               id={`filter-mobile-${section.id}-${optionIdx}`}
@@ -208,6 +245,7 @@ export default function Product() {
                 <FunnelIcon aria-hidden="true" className="h-5 w-5" />
               </button>
             </div>
+
           </div>
 
           <section aria-labelledby="products-heading" className="pb-24 pt-6">
@@ -216,16 +254,13 @@ export default function Product() {
             </h2>
 
             <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
+
               {/* Filters */}
               <form className="hidden lg:block">
-                <h3 className="sr-only">Categories</h3>
-                <ul role="list" className="space-y-4 border-b border-gray-200 pb-6 text-sm font-medium text-gray-900">
-                  {subCategories.map((category) => (
-                    <li key={category.name}>
-                      <a href={category.href}>{category.name}</a>
-                    </li>
-                  ))}
-                </ul>
+                <div className=' flex justify-between items-center '>
+                  <h2 className="text-lg font-bold opacity-50 ">Filters</h2>
+                  <FilterListIcon />
+                </div>
 
                 {filters.map((section) => (
                   <Disclosure key={section.id} as="div" className="border-b border-gray-200 py-6">
@@ -243,6 +278,7 @@ export default function Product() {
                         {section.options.map((option, optionIdx) => (
                           <div key={option.value} className="flex items-center">
                             <input
+                            onChange={() => handlefilter(option.value, section.id)}
                               defaultValue={option.value}
                               defaultChecked={option.checked}
                               id={`filter-${section.id}-${optionIdx}`}
@@ -259,12 +295,46 @@ export default function Product() {
                     </DisclosurePanel>
                   </Disclosure>
                 ))}
+
+                {singleFilter.map((section) => (
+                  <Disclosure key={section.id} as="div" className="border-b border-gray-200 py-6">
+                    <h3 className="-my-3 flow-root">
+                      <DisclosureButton className="group flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500">
+                        <span className="font-medium text-gray-900">{section.name}</span>
+                        <span className="ml-6 flex items-center">
+                          <PlusIcon aria-hidden="true" className="h-5 w-5 group-data-[open]:hidden" />
+                          <MinusIcon aria-hidden="true" className="h-5 w-5 [.group:not([data-open])_&]:hidden" />
+                        </span>
+                      </DisclosureButton>
+                    </h3>
+                    <DisclosurePanel className="pt-6">
+                      <div className="space-y-4">
+                        {section.options.map((option, optionIdx) => (
+                          <div key={option.value} className="flex items-center">
+                            <input
+                             onChange={(e) => handleRadioFilterchange(e,section.id)}
+                            defaultValue={option.value}
+                            defaultChecked={option.checked}
+                            id={`filter-${section.id}-${optionIdx}`}
+                            name={`${section.id}[]`}
+                            type="radio"
+                            className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                            />
+                            <label htmlFor={`filter-${section.id}-${optionIdx}`} className="ml-3 text-sm text-gray-600">
+                              {option.label}
+                            </label>
+                          </div>
+                        ))}
+                      </div>
+                    </DisclosurePanel>
+                  </Disclosure>
+                ))}
               </form>
 
               {/* Product grid */}
               <div className="lg:col-span-3 w-full">
                 <div className=' flex flex-wrap justify-center py-5'>
-                    {men_kurta.map((item)=><Productcard  product={item}/>)}
+                  {men_kurta.map((item) => <Productcard product={item} />)}
                 </div>
               </div>
             </div>
