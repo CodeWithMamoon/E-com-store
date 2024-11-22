@@ -5,7 +5,7 @@ import men_kurta from '../../../Data/Men_kurta';
 import sari from '../../../Data/sari';
 import Footer from '../../components/footer/footer';
 
-export default function Home() {
+export default function HomePage() {
   return (
     <div>
       <Maincarousal/>

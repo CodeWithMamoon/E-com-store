@@ -1,65 +1,18 @@
 
 'use client'
 
-import { useState } from 'react'    
-import { StarIcon } from '@heroicons/react/20/solid'
+import { useState } from 'react'
 import { Radio, RadioGroup } from '@headlessui/react'
 import Rating from '@mui/material/Rating';
-import { Grid, LinearProgress ,Box} from '@mui/material';
+import { Grid, LinearProgress, Box } from '@mui/material';
 import ProductReviewcard from './ProductReviewcard';
-import { borderRadius, color } from '@mui/system';
 import men_kurta from '../../../Data/Men_kurta';
 import Homesectioncard from '../Homesectioncard/Homesectioncard';
+import {useNavigate } from 'react-router-dom';
+import product from './Product';
 
-const product = {
-    name: 'Basic Tee 6-Pack',
-    price: '$192',
-    href: '#',
-    breadcrumbs: [
-        { id: 1, name: 'Men', href: '#' },
-        { id: 2, name: 'Clothing', href: '#' },
-    ],
-    images: [
-        {
-            src: 'https://tailwindui.com/plus/img/ecommerce-images/product-page-02-secondary-product-shot.jpg',
-            alt: 'Two each of gray, white, and black shirts laying flat.',
-        },
-        {
-            src: 'https://tailwindui.com/plus/img/ecommerce-images/product-page-02-tertiary-product-shot-01.jpg',
-            alt: 'Model wearing plain black basic tee.',
-        },
-        {
-            src: 'https://tailwindui.com/plus/img/ecommerce-images/product-page-02-tertiary-product-shot-02.jpg',
-            alt: 'Model wearing plain gray basic tee.',
-        },
-        {
-            src: 'https://tailwindui.com/plus/img/ecommerce-images/product-page-02-featured-product-shot.jpg',
-            alt: 'Model wearing plain white basic tee.',
-        },
-    ],
-    colors: [
-        { name: 'White', class: 'bg-white', selectedClass: 'ring-gray-400' },
-        { name: 'Gray', class: 'bg-gray-200', selectedClass: 'ring-gray-400' },
-        { name: 'Black', class: 'bg-gray-900', selectedClass: 'ring-gray-900' },
-    ],
-    sizes: [
-        { name: 'S', inStock: true },
-        { name: 'M', inStock: true },
-        { name: 'L', inStock: true },
-        { name: 'XL', inStock: true }, 
-    ],
-    description:
-        'The Basic Tee 6-Pack allows you to fully express your vibrant personality with three grayscale options. Feeling adventurous? Put on a heather gray tee. Want to be a trendsetter? Try our exclusive colorway: "Black". Need to add an extra pop of color to your outfit? Our white tee has you covered.',
-    highlights: [
-        'Hand cut and sewn locally',
-        'Dyed with our proprietary colors',
-        'Pre-washed & pre-shrunk',
-        'Ultra-soft 100% cotton',
-    ],
-    details:
-        'The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.',
-}
 const reviews = { href: '#', average: 4, totalCount: 117 }
+
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -68,7 +21,11 @@ function classNames(...classes) {
 export default function ProductDetails() {
     const [selectedColor, setSelectedColor] = useState(product.colors[0])
     const [selectedSize, setSelectedSize] = useState(product.sizes[2])
-
+    const navigate = useNavigate();
+ 
+    const handleAddtoCart=()=>{
+        navigate("/cart")
+    }
     return (
         <div className="bg-white">
             <div className="pt-6">
@@ -214,8 +171,9 @@ export default function ProductDetails() {
                                 </div>
 
                                 <button
-                                    type="submit"
+                                    variant='contained'
                                     className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                                    onClick={handleAddtoCart}
                                 >
                                     Add to Bag
                                 </button>
@@ -279,7 +237,7 @@ export default function ProductDetails() {
                                             <p>Exelent</p>
                                         </Grid>
                                         <Grid item xs={7}>
-                                        <LinearProgress sx={{bgcolor:"#d0d0d0", borderRadius:4,height:7 ,color:"success"}} variant="determinate" value={50} />
+                                            <LinearProgress sx={{ bgcolor: "#d0d0d0", borderRadius: 4, height: 7, color: "success" }} variant="determinate" value={50} />
                                         </Grid>
                                     </Grid>
                                     <Grid container alignItems='center' gap={2}>
@@ -287,7 +245,7 @@ export default function ProductDetails() {
                                             <p>Exelent</p>
                                         </Grid>
                                         <Grid item xs={7}>
-                                        <LinearProgress sx={{bgcolor:"#d0d0d0", borderRadius:4,height:7 ,color:"success"}} variant="determinate" value={50} />
+                                            <LinearProgress sx={{ bgcolor: "#d0d0d0", borderRadius: 4, height: 7, color: "success" }} variant="determinate" value={50} />
                                         </Grid>
                                     </Grid>
                                     <Grid container alignItems='center' gap={2}>
@@ -295,7 +253,7 @@ export default function ProductDetails() {
                                             <p>Exelent</p>
                                         </Grid>
                                         <Grid item xs={7}>
-                                        <LinearProgress sx={{bgcolor:"#d0d0d0", borderRadius:4,height:7 ,color:"success"}} variant="determinate" value={50} />
+                                            <LinearProgress sx={{ bgcolor: "#d0d0d0", borderRadius: 4, height: 7, color: "success" }} variant="determinate" value={50} />
                                         </Grid>
                                     </Grid>
                                     <Grid container alignItems='center' gap={2}>
@@ -303,7 +261,7 @@ export default function ProductDetails() {
                                             <p>Exelent</p>
                                         </Grid>
                                         <Grid item xs={7}>
-                                        <LinearProgress sx={{bgcolor:"#d0d0d0", borderRadius:4,height:7 ,color:"success"}} variant="determinate" value={50} />
+                                            <LinearProgress sx={{ bgcolor: "#d0d0d0", borderRadius: 4, height: 7, color: "success" }} variant="determinate" value={50} />
                                         </Grid>
                                     </Grid>
                                     <Grid container alignItems='center' gap={2}>
@@ -311,7 +269,7 @@ export default function ProductDetails() {
                                             <p>Exelent</p>
                                         </Grid>
                                         <Grid item xs={7}>
-                                        <LinearProgress sx={{bgcolor:"#d0d0d0", borderRadius:4,height:7 ,color:"success"}} variant="determinate" value={50} />
+                                            <LinearProgress sx={{ bgcolor: "#d0d0d0", borderRadius: 4, height: 7, color: "success" }} variant="determinate" value={50} />
                                         </Grid>
                                     </Grid>
                                     <Grid container alignItems='center' gap={2}>
@@ -319,7 +277,7 @@ export default function ProductDetails() {
                                             <p>Exelent</p>
                                         </Grid>
                                         <Grid item xs={7}>
-                                        <LinearProgress sx={{bgcolor:"#d0d0d0", borderRadius:4,height:7 ,color:"success"}} variant="determinate" value={50} />
+                                            <LinearProgress sx={{ bgcolor: "#d0d0d0", borderRadius: 4, height: 7, color: "success" }} variant="determinate" value={50} />
                                         </Grid>
                                     </Grid>
 
@@ -331,13 +289,13 @@ export default function ProductDetails() {
                     </div>
                 </section>
 
-           {/* semiller Product */}
-           <section className='pt-10'>
-            <h1 className=' ml-4 py-5 text-xl font-bold'>Semiller Product</h1>
-            <div className=' flex flex-wrap space-y-5'>
-            {men_kurta.map((item)=><Homesectioncard product={item}/>)}
-            </div>
-           </section>
+                {/* semiller Product */}
+                <section className='pt-10'>
+                    <h1 className=' ml-4 py-5 text-xl font-bold'>Semiller Product</h1>
+                    <div className=' flex flex-wrap space-y-5'>
+                        {men_kurta.map((item) => <Homesectioncard product={item} />)}
+                    </div>
+                </section>
             </div>
         </div>
     )

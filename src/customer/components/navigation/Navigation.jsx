@@ -10,16 +10,17 @@ import {
 
 import { Avatar, Button, Menu, MenuItem } from "@mui/material";
 import { deepPurple } from "@mui/material/colors";
-import navigation from "./navigation";
+import { useNavigate } from "react-router-dom";
+import navigation from './navigationData';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
-
 export default function Navigation() {
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const openUserMenu = Boolean(anchorEl);
+  const navigate=useNavigate()
 
   const handleUserClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -27,18 +28,10 @@ export default function Navigation() {
   const handleCloseUserMenu = (event) => {
     setAnchorEl(null);
   };
-
-
-
-
-
-
-  const handleCategoryClick = (category, section, item, close) => {
-    // navigate(`/${category.id}/${section.id}/${item.id}`);
+const handleCategoryClick = (category, section, item, close) => {
+    navigate(`/${category.id}/${section.id}/${item.id}`);
     close();
   };
-
-  ;
 
   return (
     <div className="bg-white pb-10">
@@ -408,7 +401,7 @@ export default function Navigation() {
                         <MenuItem>
                           Profile
                         </MenuItem>
-                        <MenuItem>
+                        <MenuItem onClick={()=>navigate("./account/order")}>
                           My Orders
                         </MenuItem>
                         <MenuItem>Logout</MenuItem>
