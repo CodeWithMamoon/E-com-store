@@ -9,12 +9,16 @@ import HomePage from '../customer/pages/Homepage/HomePage'
 import CheckOut from '../customer/components/CheckOut/CheckOut'
 import Order from '../customer/components/Order/Order'
 import OrderDetail from '../customer/components/Order/OrderDetails'
+import RegistrationForm from '../customer/Auth/RegistrationForm'
+import LoginForm from '../customer/Auth/loginForm'
 
 function CustomerRouter() {
   return (
     <div>
       <div> <Navigation/></div>
       <Routes>
+      <Route path='/register' element={<RegistrationForm/>}></Route>
+      <Route path='/login' element={<LoginForm/>}></Route>
         <Route path='/' element={<HomePage/>}></Route>
         <Route path='/cart' element={<Cart/>}></Route>
         <Route path='/:levelOne/:levelTwo/:levelThre' element={<Product/>}></Route>
@@ -22,13 +26,6 @@ function CustomerRouter() {
         <Route path='/checkout' element={<CheckOut/>}></Route>
         <Route path='/account/order' element={<Order/>}></Route>
         <Route path='/account/order/:orderId' element={<OrderDetail/>}></Route>
-   
-      {/* <ProductDetails/> */}
-      {/* <Cart/> */}
-      {/* <CheckOut/> */}
-      {/* <Order/> */}
-    
-      {/* <OrderDetails/> */}
       </Routes>
       <div>
       <Footer/>
